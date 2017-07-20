@@ -25,7 +25,7 @@ services:
        - db_data:/data/db
 
   db_backup:
-    image: tmannherz/mongo-gce-backup
+    image: tmannherz/docker-mongo-gce-backup
     depends_on:
       - db
     restart: always
@@ -34,8 +34,6 @@ services:
       GS_PROJECT_ID: my-project
       GS_BACKUP_BUCKET: my-bucket
       GS_SERVICE_EMAIL: emails@proj.iam.gserviceaccount.com
-    volumes:
-       - db_data:/data/db
     secrets:
       - gcloud_service_account
 secrets:
