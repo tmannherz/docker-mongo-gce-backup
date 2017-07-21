@@ -1,5 +1,6 @@
 FROM debian:jessie-slim
-LABEL Description="MongoDB cron backup to Google Cloud Storage (GCE)"
+LABEL description="MongoDB cron backup to Google Cloud Storage (GCE)"
+LABEL maintainer="todd.mannherz@gmail.com"
 
 RUN apt-get update && \ 
     apt-get install -qqy cron curl python
@@ -16,8 +17,6 @@ RUN curl -s -O https://storage.googleapis.com/pub/gsutil.tar.gz && \
     chmod +x /root/gsutil/gsutil && \
     ln -s /root/gsutil/gsutil /usr/local/bin/gsutil && \
     rm gsutil.tar.gz    
-
-ENV MONGO_DATABASE "documents"
 
 # Add the backup script
 RUN mkdir /backup

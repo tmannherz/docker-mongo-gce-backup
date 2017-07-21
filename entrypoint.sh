@@ -8,7 +8,7 @@ gs_service_client_id="$GS_SERVICE_EMAIL"
 cat <<EOF > /etc/boto.cfg
 [Credentials]
 gs_service_client_id = $gs_service_client_id
-gs_service_key_file = /run/secrets/gcloud_service_account
+gs_service_key_file = /backup/service-account.json
 [Boto]
 https_validate_certificates = True
 [GSUtil]
@@ -17,8 +17,17 @@ default_api_version = 2
 default_project_id = $gs_project_id
 EOF
 
-# Expose env vars to the cron
-env | sed -r "s/'/\\\'/gm" | sed -r "s/^([^=]+=)(.*)\$/\1'\2'/gm" > /etc/environment
+# support docker-compose secret
+if [ -f /run/secrets/service_account ]; then
+    cp /run/secrets/service_account /backup/service-account.json
+fi
 
-echo "Starting the cron service."
-cron -f
+if [ "$1" == "" ]; then
+    # Expose env vars to the cron
+    env | sed -r "s/'/\\\'/gm" | sed -r "s/^([^=]+=)(.*)\$/\1'\2'/gm" > /etc/environment
+
+    echo "Starting the cron service."
+    cron -f
+fi
+
+exec "$@"

@@ -1,5 +1,6 @@
 #!/bin/bash
 # MongoDB backup to GCE
+set -e
 echo "--------------------------------"
 
 # variables
