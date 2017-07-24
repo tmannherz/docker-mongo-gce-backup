@@ -46,11 +46,13 @@ services:
     restart: always
     environment:
       MONGO_HOST: db
+      MONGO_DATABASE: documents
       GS_PROJECT_ID: my-project
-      GS_BACKUP_BUCKET: my-bucket
       GS_SERVICE_EMAIL: emails@proj.iam.gserviceaccount.com
+      GS_BACKUP_BUCKET: my-bucket
     secrets:
       - service_account
+
 secrets:
   service_account:
     file: service_account.json      
