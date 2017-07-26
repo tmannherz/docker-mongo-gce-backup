@@ -2,7 +2,7 @@
 
 A docker image to back up a MongoDB instance to Google Cloud Storage.
 
-The container runs a cron that backs up the database using `mongodump` in a gzipped archive (`--gzip --archive`) at 6am UTC before pushing to GS.
+The container runs a cron that backs up the database using `mongodump` in a gzipped archive (`--gzip --archive`) at 6am UTC (by default) before pushing to GS.
 
 ## Environment Variables
 
@@ -11,6 +11,7 @@ The container runs a cron that backs up the database using `mongodump` in a gzip
 * `GS_PROJECT_ID` - GCE project ID
 * `GS_SERVICE_EMAIL` - Email of service account to use
 * `GS_BACKUP_BUCKET` - Cloud storage bucket to push backup to
+* `CRON_SCHEUDLE` - Optional, defauls to `0 6 * * *`
 
 The backup script expects a service account auth JSON file in `/backup/service-account.json`.
 
@@ -26,7 +27,7 @@ docker run --name backup \
   -e GS_BACKUP_BUCKET=my-bucket \
   --network default \
   --link service_db:db \
-  tmannherz/docker-mongo-gce-backup
+  tmannherz/mongo-gce-backup
 ```
 
 ## Use with `docker-compose`
@@ -40,7 +41,7 @@ services:
        - db_data:/data/db
 
   db_backup:
-    image: tmannherz/docker-mongo-gce-backup
+    image: tmannherz/mongo-gce-backup
     depends_on:
       - db
     restart: always
