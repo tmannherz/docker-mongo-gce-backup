@@ -22,7 +22,9 @@ RUN curl -s -O https://storage.googleapis.com/pub/gsutil.tar.gz && \
 ENV CRON_SCHEDULE "0 6 * * *"
 RUN mkdir /backup
 COPY db_backup.sh /backup/
+COPY db_restore.sh /backup/
 RUN chmod +x /backup/db_backup.sh
+RUN chmod +x /backup/db_restore.sh
 
 # Docker logging from cron runs
 RUN ln -sf /proc/1/fd/1 /var/log/cron.log
